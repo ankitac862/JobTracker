@@ -1,5 +1,6 @@
 # Gradle
 **/build/
+.hprof
 
 # Android Studio / IntelliJ IDEA
 .idea/
