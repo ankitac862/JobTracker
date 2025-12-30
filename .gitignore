@@ -1,6 +1,9 @@
 # Gradle
 **/build/
-.hprof
+.gradle/
+
+# Heap dumps
+*.hprof
 
 # Android Studio / IntelliJ IDEA
 .idea/
