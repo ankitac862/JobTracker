@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Job Tracker</string>
+    
+    <!-- Applications Screen -->
+    <string name="applications_title">Job Applications</string>
+    <string name="add_application">Add Application</string>
+    <string name="edit_application">Edit Application</string>
+    <string name="search_hint">Search by company or role</string>
+    <string name="filter_all">All</string>
+    
+    <!-- Application Fields -->
+    <string name="company">Company</string>
+    <string name="role">Role</string>
+    <string name="location">Location</string>
+    <string name="job_url">Job URL</string>
+    <string name="source">Source</string>
+    <string name="status">Status</string>
+    <string name="notes">Notes</string>
+    <string name="applied_date">Applied Date</string>
+    
+    <!-- Application Detail -->
+    <string name="application_details">Application Details</string>
+    <string name="tasks">Tasks</string>
+    <string name="add_task">Add Task</string>
+    <string name="status_history">Status History</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    
+    <!-- Common -->
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="back">Back</string>
+    <string name="loading">Loading…</string>
+    <string name="error">Error</string>
+    <string name="not_found">Not found</string>
+    
+    <!-- Task -->
+    <string name="task_title">Task Title</string>
+    <string name="due_date">Due Date</string>
+    
+    <!-- Status History -->
+    <string name="status_changed">Status Changed</string>
+</resources>
+

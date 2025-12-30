@@ -1,0 +1,29 @@
+CREATE TABLE statusHistory (
+    id TEXT NOT NULL PRIMARY KEY,
+    applicationId TEXT NOT NULL,
+    fromStatus TEXT,
+    toStatus TEXT NOT NULL,
+    changedAtEpochMs INTEGER NOT NULL,
+    note TEXT,
+    needsSync INTEGER NOT NULL DEFAULT 1
+);
+
+CREATE INDEX statusHistory_application ON statusHistory(applicationId);
+CREATE INDEX statusHistory_changed ON statusHistory(changedAtEpochMs);
+
+observeByApplicationId:
+SELECT * FROM statusHistory WHERE applicationId = ? ORDER BY changedAtEpochMs DESC;
+
+selectById:
+SELECT * FROM statusHistory WHERE id = ?;
+
+insert:
+INSERT INTO statusHistory (
+    id, applicationId, fromStatus, toStatus, changedAtEpochMs, note, needsSync
+) VALUES (?, ?, ?, ?, ?, ?, ?);
+
+selectPendingSync:
+SELECT * FROM statusHistory WHERE needsSync = 1;
+
+markSynced:
+UPDATE statusHistory SET needsSync = 0 WHERE id = ?;

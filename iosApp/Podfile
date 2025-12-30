@@ -1,0 +1,29 @@
+platform :ios, '14.0'
+
+target 'iosApp' do
+  use_frameworks! :linkage => :static
+
+  # ✅ KMP shared module (this is what lets Xcode access your Kotlin shared code)
+  pod 'shared', :path => '../shared'
+
+  # ✅ Firebase for iOS (Swift)
+  pod 'FirebaseAuth'
+  pod 'FirebaseFirestore'
+end
+
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '14.0'
+      config.build_settings['CLANG_CXX_LANGUAGE_STANDARD'] = 'c++17'
+      config.build_settings['CLANG_CXX_LIBRARY'] = 'libc++'
+
+      # ✅ Fix Xcode 15/16 script warnings sometimes
+      config.build_settings['ENABLE_USER_SCRIPT_SANDBOXING'] = 'NO'
+      
+      # ✅ Link SQLite for SQLDelight
+      config.build_settings['OTHER_LDFLAGS'] ||= ['$(inherited)']
+      config.build_settings['OTHER_LDFLAGS'] << '-lsqlite3'
+    end
+  end
+end

@@ -1,0 +1,47 @@
+CREATE TABLE interviews (
+    interviewId TEXT NOT NULL PRIMARY KEY,
+    applicationId TEXT NOT NULL,
+    scheduledDateEpochMs INTEGER NOT NULL,
+    interviewMode TEXT NOT NULL,
+    interviewerName TEXT,
+    interviewerEmail TEXT,
+    location TEXT,
+    meetingLink TEXT,
+    notes TEXT,
+    createdAtEpochMs INTEGER NOT NULL,
+    updatedAtEpochMs INTEGER NOT NULL,
+    isDeleted INTEGER NOT NULL DEFAULT 0,
+    needsSync INTEGER NOT NULL DEFAULT 1
+);
+
+CREATE INDEX interviews_application ON interviews(applicationId);
+CREATE INDEX interviews_scheduled ON interviews(scheduledDateEpochMs);
+
+selectByApplicationId:
+SELECT * FROM interviews WHERE applicationId = ? AND isDeleted = 0 ORDER BY scheduledDateEpochMs ASC;
+
+selectUpcoming:
+SELECT * FROM interviews 
+WHERE scheduledDateEpochMs >= ? 
+AND isDeleted = 0 
+ORDER BY scheduledDateEpochMs ASC;
+
+selectById:
+SELECT * FROM interviews WHERE interviewId = ? AND isDeleted = 0;
+
+upsert:
+INSERT OR REPLACE INTO interviews (
+    interviewId, applicationId, scheduledDateEpochMs, interviewMode,
+    interviewerName, interviewerEmail, location, meetingLink, notes,
+    createdAtEpochMs, updatedAtEpochMs, isDeleted, needsSync
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+softDelete:
+UPDATE interviews SET isDeleted = 1, updatedAtEpochMs = ?, needsSync = 1 WHERE interviewId = ?;
+
+selectPendingSync:
+SELECT * FROM interviews WHERE needsSync = 1;
+
+markSynced:
+UPDATE interviews SET needsSync = 0 WHERE interviewId = ?;
+

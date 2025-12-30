@@ -1,0 +1,51 @@
+/* 
+  Localizable.strings
+  Job Tracker iOS App
+  
+  Created for iOS localization.
+  Keep keys consistent with Android strings.xml
+*/
+
+/* App */
+"app_name" = "Job Tracker";
+
+/* Applications Screen */
+"applications_title" = "Job Applications";
+"add_application" = "Add Application";
+"edit_application" = "Edit Application";
+"search_hint" = "Search by company or role";
+"filter_all" = "All";
+
+/* Application Fields */
+"company" = "Company";
+"role" = "Role";
+"location" = "Location";
+"job_url" = "Job URL";
+"source" = "Source";
+"status" = "Status";
+"notes" = "Notes";
+"applied_date" = "Applied Date";
+
+/* Application Detail */
+"application_details" = "Application Details";
+"tasks" = "Tasks";
+"add_task" = "Add Task";
+"status_history" = "Status History";
+"edit" = "Edit";
+"delete" = "Delete";
+
+/* Common */
+"save" = "Save";
+"cancel" = "Cancel";
+"back" = "Back";
+"loading" = "Loading…";
+"error" = "Error";
+"not_found" = "Not found";
+
+/* Task */
+"task_title" = "Task Title";
+"due_date" = "Due Date";
+
+/* Status History */
+"status_changed" = "Status Changed";
+

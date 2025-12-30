@@ -1,0 +1,30 @@
+CREATE TABLE attachmentLinks (
+    attachmentLinkId TEXT NOT NULL PRIMARY KEY,
+    applicationId TEXT NOT NULL,
+    fileName TEXT NOT NULL,
+    fileUrl TEXT NOT NULL,
+    fileType TEXT,
+    fileSizeBytes INTEGER,
+    uploadedAtEpochMs INTEGER NOT NULL,
+    createdAtEpochMs INTEGER NOT NULL,
+    updatedAtEpochMs INTEGER NOT NULL,
+    isDeleted INTEGER NOT NULL DEFAULT 0
+);
+
+CREATE INDEX attachmentLinks_application ON attachmentLinks(applicationId);
+
+selectByApplicationId:
+SELECT * FROM attachmentLinks WHERE applicationId = ? AND isDeleted = 0 ORDER BY uploadedAtEpochMs DESC;
+
+selectById:
+SELECT * FROM attachmentLinks WHERE attachmentLinkId = ? AND isDeleted = 0;
+
+upsert:
+INSERT OR REPLACE INTO attachmentLinks (
+    attachmentLinkId, applicationId, fileName, fileUrl, fileType,
+    fileSizeBytes, uploadedAtEpochMs, createdAtEpochMs, updatedAtEpochMs, isDeleted
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+softDelete:
+UPDATE attachmentLinks SET isDeleted = 1, updatedAtEpochMs = ? WHERE attachmentLinkId = ?;
+

@@ -1,0 +1,36 @@
+CREATE TABLE tasks (
+    id TEXT NOT NULL PRIMARY KEY,
+    applicationId TEXT NOT NULL,
+    title TEXT NOT NULL,
+    dueDateEpochMs INTEGER,
+    isDone INTEGER NOT NULL DEFAULT 0,
+    updatedAtEpochMs INTEGER NOT NULL,
+    isDeleted INTEGER NOT NULL DEFAULT 0,
+    needsSync INTEGER NOT NULL DEFAULT 1
+);
+
+CREATE INDEX tasks_application ON tasks(applicationId);
+CREATE INDEX tasks_done ON tasks(isDone);
+
+selectByApplicationId:
+SELECT * FROM tasks WHERE applicationId = ? AND isDeleted = 0 ORDER BY updatedAtEpochMs DESC;
+
+selectById:
+SELECT * FROM tasks WHERE id = ? AND isDeleted = 0;
+
+upsert:
+INSERT OR REPLACE INTO tasks (
+    id, applicationId, title, dueDateEpochMs, isDone, updatedAtEpochMs, isDeleted, needsSync
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?);
+
+softDelete:
+UPDATE tasks SET isDeleted = 1, updatedAtEpochMs = ?, needsSync = 1 WHERE id = ?;
+
+toggleDone:
+UPDATE tasks SET isDone = ?, updatedAtEpochMs = ?, needsSync = 1 WHERE id = ?;
+
+selectPendingSync:
+SELECT * FROM tasks WHERE needsSync = 1;
+
+markSynced:
+UPDATE tasks SET needsSync = 0 WHERE id = ?;

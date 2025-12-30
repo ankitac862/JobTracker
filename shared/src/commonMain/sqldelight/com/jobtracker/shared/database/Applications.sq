@@ -1,0 +1,51 @@
+CREATE TABLE applications (
+    id TEXT NOT NULL PRIMARY KEY,
+    company TEXT NOT NULL,
+    role TEXT NOT NULL,
+    location TEXT,
+    jobUrl TEXT,
+    source TEXT,
+    status TEXT NOT NULL,
+    appliedDateEpochMs INTEGER NOT NULL,
+    notes TEXT NOT NULL,
+    updatedAtEpochMs INTEGER NOT NULL,
+    isDeleted INTEGER NOT NULL DEFAULT 0,
+    needsSync INTEGER NOT NULL DEFAULT 1
+);
+
+CREATE INDEX applications_status ON applications(status);
+CREATE INDEX applications_company ON applications(company);
+CREATE INDEX applications_updated ON applications(updatedAtEpochMs);
+
+selectAll:
+SELECT * FROM applications WHERE isDeleted = 0 ORDER BY updatedAtEpochMs DESC;
+
+selectById:
+SELECT * FROM applications WHERE id = ? AND isDeleted = 0;
+
+selectByStatus:
+SELECT * FROM applications WHERE status = ? AND isDeleted = 0 ORDER BY updatedAtEpochMs DESC;
+
+searchByKeyword:
+SELECT * FROM applications 
+WHERE isDeleted = 0 
+AND (
+    company LIKE '%' || ? || '%' 
+    OR role LIKE '%' || ? || '%'
+)
+ORDER BY updatedAtEpochMs DESC;
+
+upsert:
+INSERT OR REPLACE INTO applications (
+    id, company, role, location, jobUrl, source, status,
+    appliedDateEpochMs, notes, updatedAtEpochMs, isDeleted, needsSync
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+softDelete:
+UPDATE applications SET isDeleted = 1, updatedAtEpochMs = ?, needsSync = 1 WHERE id = ?;
+
+selectPendingSync:
+SELECT * FROM applications WHERE needsSync = 1;
+
+markSynced:
+UPDATE applications SET needsSync = 0 WHERE id = ?;

@@ -1,0 +1,36 @@
+CREATE TABLE contacts (
+    id TEXT NOT NULL PRIMARY KEY,
+    applicationId TEXT NOT NULL,
+    contactName TEXT NOT NULL,
+    contactRole TEXT,
+    emailText TEXT,
+    linkedInUrl TEXT,
+    notesText TEXT,
+    createdAtEpochMs INTEGER NOT NULL,
+    updatedAtEpochMs INTEGER NOT NULL,
+    isDeleted INTEGER NOT NULL DEFAULT 0,
+    needsSync INTEGER NOT NULL DEFAULT 1
+);
+
+CREATE INDEX contacts_application ON contacts(applicationId);
+
+selectByApplicationId:
+SELECT * FROM contacts WHERE applicationId = ? AND isDeleted = 0 ORDER BY updatedAtEpochMs DESC;
+
+selectById:
+SELECT * FROM contacts WHERE id = ? AND isDeleted = 0;
+
+upsert:
+INSERT OR REPLACE INTO contacts (
+    id, applicationId, contactName, contactRole, emailText, linkedInUrl, notesText,
+    createdAtEpochMs, updatedAtEpochMs, isDeleted, needsSync
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+
+softDelete:
+UPDATE contacts SET isDeleted = 1, updatedAtEpochMs = ?, needsSync = 1 WHERE id = ?;
+
+selectPendingSync:
+SELECT * FROM contacts WHERE needsSync = 1;
+
+markSynced:
+UPDATE contacts SET needsSync = 0 WHERE id = ?;
