@@ -1,0 +1,20 @@
+# Gradle
+**/build/
+
+# Android Studio / IntelliJ IDEA
+.idea/
+*.iml
+local.properties
+
+# Operating System Files
+.DS_Store # macOS files
+Thumbs.db # Windows files
+
+# Compiled files
+*.apk
+*.aab
+*.class
+*.dex
+
+# Secrets (if applicable)
+secrets.properties # Example for local secrets file
