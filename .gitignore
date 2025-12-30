@@ -1,5 +1,6 @@
 # Gradle
 **/build/
+shared/build/
 .gradle/
 
 # Heap dumps
